@@ -166,20 +166,36 @@ let updateUser = function (req, res) {
 };
 
 let deleteUser = function (req, res) {
-
+	if (req.params.email) {
+		// Lookup the user
+		_data.read("users", req.params.email, function (err, data) {
+			if (!err && data) {
+				// Remove the hashed password from the user object before returning it to the request
+				_data.delete("users", req.params.email, function (err) {
+					if (!err) {
+						// callback(200, { Success: "User deleted." });
+						res.status(200).send('User deleted');
+					} else {
+						// callback(500, { Error: "Could not delete the specified user" });
+						res.status(500).send('Could not delete the specified user');
+					}
+				});
+			} else {
+				// callback(400, { Error: "Could not find the specified user" });
+				res.status(400).send("Could not find the specified user");
+			}
+		});
+	} else {
+		// callback(400, { Error: "Missing required field"});
+		res.status(400).send("Missing required field");
+	}
 };
-
-let listUsers = function (req, res) {
-
-};
-
 
 module.exports = {
 	createUser,
 	readUser,
 	updateUser,
 	deleteUser,
-	listUsers
 };
 
 

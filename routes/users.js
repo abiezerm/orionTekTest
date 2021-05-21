@@ -8,6 +8,7 @@ router.get('/:email', userController.readUser);
 router.get('/list', userController.readUser);
 router.post('/', userController.createUser);
 router.patch('/', userController.updateUser);
+router.delete('/:email', userController.deleteUser);
 
 
 
